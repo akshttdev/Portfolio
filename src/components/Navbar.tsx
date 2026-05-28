@@ -23,22 +23,21 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 w-full z-[1001] px-6 py-6 select-none mix-blend-exclusion">
       {/* ================= MOBILE NAV (single line) ================= */}
-      <div className="md:hidden w-full flex items-center justify-between whitespace-nowrap px-2">
+      <div className="md:hidden w-full flex items-center justify-between whitespace-nowrap gap-x-3 px-1">
         {/* Left — AKSHAT */}
         <span onClick={handleHomeClick} className="nav-txt cursor-pointer">
           <TextScramble enterText="AKSHAT" />
         </span>
 
-        {/* Center — ABOUT + YEAR */}
-        <div className="flex items-center gap-x-4">
+        {/* Center — ABOUT (year hidden on mobile to stop the bar from collapsing) */}
+        <div className="flex items-center gap-x-3">
           <Link href="/about" className="nav-txt">
             <TextScramble enterText="ABOUT" />
           </Link>
-          <span className="nav-txt">@{currentYear}</span>
         </div>
 
         {/* Right — SOCIALS */}
-        <div className="flex items-center gap-x-4">
+        <div className="flex items-center gap-x-3">
           <a
             href="https://x.com/akshttdev"
             target="_blank"
