@@ -1,8 +1,8 @@
 "use client";
 
-import Lenis from "lenis";
+import { initLenis } from "@/lib/lenis";
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
+import SkullHero from "@/components/SkullHero";
 import Projects from "@/components/Projects";
 import Background from "@/components/Vision";
 import HorizontalTransition from "@/components/HorizontalTransition";
@@ -22,12 +22,7 @@ export default function Home() {
       setFirstLoad(true);
     }
 
-    const lenis = new Lenis();
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+    initLenis();
   }, []);
 
   return (
@@ -36,7 +31,7 @@ export default function Home() {
         <PreLoader>
           <Navbar />
           <main>
-            <Hero />
+            <SkullHero />
             <Background />
             <Projects />
             <Footer />
@@ -46,7 +41,7 @@ export default function Home() {
         <HorizontalTransition>
           <Navbar />
           <main>
-            <Hero />
+            <SkullHero />
             <Background />
             <Projects />
             <Footer />

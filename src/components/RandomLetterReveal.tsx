@@ -5,9 +5,10 @@ import { useEffect, useRef, useState } from "react";
 type Props = {
   word: string;
   className?: string;
+  breakable?: boolean;
 };
 
-const RandomLetterReveal = ({ word, className }: Props) => {
+const RandomLetterReveal = ({ word, className, breakable = false }: Props) => {
   const containerRef = useRef<HTMLSpanElement>(null);
 
   const [revealedIndices, setRevealedIndices] = useState<Set<number>>(
@@ -91,7 +92,7 @@ const RandomLetterReveal = ({ word, className }: Props) => {
             opacity: revealedIndices.has(i) ? 1 : 0,
           }}
         >
-          {char === " " ? "\u00A0" : char}
+          {char === " " ? (breakable ? " " : " ") : char}
         </span>
       ))}
     </span>

@@ -59,6 +59,14 @@ const Navbar = () => {
             <TextScramble enterText="MAIL" />
           </a>
           <a
+            href="https://cal.com/akshtt/meeting-with-akshat"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-txt"
+          >
+            <TextScramble enterText="CAL" />
+          </a>
+          <a
             href="https://drive.google.com/drive/folders/1jZGznxWpaR7PZEiohbVRxG_3Sn1WAIGg?dmr=1&ec=wgc-drive-hero-goto"
             className="nav-txt"
           >
@@ -115,6 +123,16 @@ const Navbar = () => {
             <div className=" w-[2.7rem] text-left">
               <a href="mailto:akshttt.dev@gmail.com" className="nav-txt">
                 <TextScramble enterText="MAIL" />
+              </a>
+            </div>
+            <div className="w-[2.2rem] text-left">
+              <a
+                href="https://cal.com/akshtt/meeting-with-akshat"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nav-txt"
+              >
+                <TextScramble enterText="CAL" />
               </a>
             </div>
             <div className="w-[3.7rem] text-left">

@@ -1,8 +1,17 @@
 "use client";
 
-import TextScramble from "./TextScramble";
+import { getLenis } from "@/lib/lenis";
 
 export default function Footer() {
+  const scrollToTop = () => {
+    const lenis = getLenis();
+    if (lenis) {
+      lenis.scrollTo(0, { duration: 1.4 });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
     <footer
       className="
@@ -22,19 +31,21 @@ export default function Footer() {
       </div>
 
       {/* MAIN SECTION - LEFT ALIGNED */}
-      <div className="relative z-10 flex flex-col mt-30 justify-center h-full max-w-2xl">
-        <h1 className="text-5xl md:text-7xl font-extrabold uppercase leading-[0.9]">
-          LET'S MAKE
-          <br /> SOMETHING
-          <br /> THAT FEELS ALIVE.
-        </h1>
+      <div className="relative z-10 flex flex-col mt-30 justify-center h-full">
+        <div className="max-w-2xl">
+          <h1 className="text-5xl md:text-7xl font-extrabold uppercase leading-[0.9]">
+            LET'S MAKE
+            <br /> SOMETHING
+            <br /> THAT FEELS ALIVE.
+          </h1>
 
-        <p className="mt-6 text-sm opacity-70 uppercase tracking-wide">
-          [ available for selected projects ]
-        </p>
+          <p className="mt-6 text-sm opacity-70 uppercase tracking-wide">
+            [ available for selected projects ]
+          </p>
+        </div>
 
         {/* CONTACT LINKS — HORIZONTAL WITH PROPER SPACING */}
-        <div className="flex flex-wrap items-center gap-8 md:gap-10 mt-12 text-3xl md:text-4xl max-sm:pt-10 pt-60 font-bold uppercase">
+        <div className="flex flex-wrap items-center gap-6 md:gap-8 mt-12 text-3xl md:text-4xl max-sm:pt-10 pt-60 font-bold uppercase">
           <a
             href="mailto:akshttt.dev@gmail.com"
             className="text-white/60 hover:text-white transition-colors duration-200 block"
@@ -67,6 +78,15 @@ export default function Footer() {
           >
             github
           </a>
+
+          <a
+            href="https://cal.com/akshtt/meeting-with-akshat"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white/60 hover:text-white transition-colors duration-200 block"
+          >
+            meeting
+          </a>
         </div>
       </div>
 
@@ -82,7 +102,7 @@ export default function Footer() {
 
         <div className="text-xs opacity-70 text-right space-y-1">
           <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={scrollToTop}
             className="text-white/60 hover:text-white transition-colors duration-200 underline font-semibold uppercase cursor-pointer"
           >
             back to top
