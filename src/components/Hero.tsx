@@ -43,7 +43,7 @@ const Hero: FC = () => {
         ======================================================= */}
         <div className="mt-24 md:mt-32 ml-0 lg:ml-0 xl:ml-[-10rem]">
           <RandomLetterReveal
-            word="FRONT–END"
+            word="SOFTWARE"
             className="block font-extrabold tracking-tight leading-[0.9]
                       text-[2.8rem] sm:text-[3.5rem]
                       md:text-[5rem]
@@ -63,7 +63,7 @@ const Hero: FC = () => {
           />
 
           <RandomLetterReveal
-            word="BASED IN DELHI,"
+            word="BASED IN MUNICH,"
             className="block font-extrabold tracking-tight leading-[0.9]
                       text-[2.8rem] sm:text-[3.5rem]
                       md:text-[5rem]
