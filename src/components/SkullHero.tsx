@@ -85,7 +85,7 @@ export default function SkullHero() {
           <div className="text-white mix-blend-difference px-6 md:px-16">
             <div>
               <RandomLetterReveal
-                word="FRONT–END"
+                word="SOFTWARE"
                 className="font-extrabold tracking-tight leading-[0.9]
                           text-[1.8rem] sm:text-[2.3rem]
                           md:text-[3.25rem]
@@ -109,7 +109,7 @@ export default function SkullHero() {
 
             <div>
               <RandomLetterReveal
-                word="BASED IN DELHI, INDIA"
+                word="BASED IN MUNICH "
                 className="font-extrabold tracking-tight leading-[0.9]
                           text-[1.8rem] sm:text-[2.3rem]
                           md:text-[3.25rem]

@@ -73,7 +73,7 @@ const Hero: FC = () => {
           />
 
           <RandomLetterReveal
-            word="INDIA"
+            word="GERMANY"
             className="block font-extrabold tracking-tight leading-[0.9]
                       text-[2.8rem] sm:text-[3.5rem]
                       md:text-[5rem]
