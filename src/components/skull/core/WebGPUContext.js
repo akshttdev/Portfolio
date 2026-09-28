@@ -1,5 +1,14 @@
 import * as THREE from "three/webgpu";
 
+// The scene renders two full scenes plus bloom/fluid-sim/grain/dither passes
+// every frame — cost scales with pixel count. On a 4K/large display that's
+// 4x+ the fragment-shader work of 1080p for no visible benefit at hero-blur
+// distances, and was measured to make the scene noticeably laggy. Cap the
+// internal render resolution and let the canvas (already 100% width/height)
+// upscale it — the softness is imperceptible against the film-grain/dither
+// look, but the GPU cost stays flat above this budget.
+const MAX_RENDER_PIXELS = 1920 * 1080;
+
 class WebGPUContext {
 	constructor(container) {
 		if (!!WebGPUContext.instance) {
@@ -24,8 +33,9 @@ class WebGPUContext {
 		await this.renderer.init();
 
 		const { width, height } = this.getFullScreenDimensions();
-		this.renderer.setSize(width, height);
+		const { renderWidth, renderHeight } = this.#computeRenderSize(width, height);
 		this.renderer.setPixelRatio(this.pixelRatio);
+		this.renderer.setSize(renderWidth, renderHeight, false);
 		this.renderer.shadowMap.enabled = false;
 		this.renderer.autoClear = false;
 		this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -36,6 +46,15 @@ class WebGPUContext {
 		const width = rect?.width || window.innerWidth;
 		const height = rect?.height || window.innerHeight;
 		return { width, height };
+	}
+
+	#computeRenderSize(width, height) {
+		const pixels = width * height;
+		const scale = pixels > MAX_RENDER_PIXELS ? Math.sqrt(MAX_RENDER_PIXELS / pixels) : 1;
+		return {
+			renderWidth: Math.round(width * scale),
+			renderHeight: Math.round(height * scale),
+		};
 	}
 
 	#createCanvas() {
@@ -52,8 +71,9 @@ class WebGPUContext {
 
 	onResize(width, height) {
 		this.pixelRatio = Math.min(window.devicePixelRatio, 1.0);
-		this.renderer.setSize(width, height);
+		const { renderWidth, renderHeight } = this.#computeRenderSize(width, height);
 		this.renderer.setPixelRatio(this.pixelRatio);
+		this.renderer.setSize(renderWidth, renderHeight, false);
 	}
 
 	dispose() {

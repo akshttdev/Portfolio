@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Hero from "./Hero";
 import RandomLetterReveal from "./RandomLetterReveal";
+import HeroParagraph from "./HeroParagraph";
 import { markSkullReady } from "@/lib/skullReady";
 
 type ThreeInstance = {
@@ -121,31 +122,8 @@ export default function SkullHero() {
           </div>
 
           {/* Paragraph — bottom-right */}
-          <div className="mt-auto w-full max-w-6xl mx-auto px-6 md:px-16 md:flex md:justify-end md:pr-5 text-white mix-blend-difference">
-            <div className="max-w-[90%] sm:max-w-[80%] md:max-w-md text-left md:text-right">
-              {/* Mobile: flat string, breakable spaces, wraps naturally */}
-              <span className="md:hidden">
-                <RandomLetterReveal
-                  breakable
-                  word="I DESIGN AND BUILD SMOOTH, INTERACTIVE, AND VISUALLY ENGAGING DIGITAL EXPERIENCES. I BLEND UI/UX, MOTION, AND CLEAN ENGINEERING TO CREATE PRODUCTS THAT FEEL FAST, MODERN, AND HUMAN. I LOVE EXPERIMENTING WITH MOTION, INTERACTION, AND MICRO DETAILS THAT MAKE INTERFACES FEEL ALIVE. ALWAYS EXPLORING, ALWAYS LEARNING CRAFTING DIGITAL WORK THAT FEELS EXPRESSIVE, INTENTIONAL AND REALLY COOL."
-                  className="text-xs sm:text-sm leading-relaxed uppercase font-medium text-left"
-                />
-              </span>
-
-              {/* Desktop: hardcoded line shape with nbsp (original layout) */}
-              <span className="hidden md:inline">
-                <RandomLetterReveal
-                  word={`I DESIGN AND BUILD SMOOTH, INTERACTIVE, AND VISUALLY ENGAGING DIGITAL
-EXPERIENCES. I BLEND UI/UX, MOTION, AND CLEAN ENGINEERING TO CREATE
-PRODUCTS THAT FEEL FAST, MODERN, AND HUMAN. I LOVE EXPERIMENTING
-WITH MOTION, INTERACTION, AND MICRO DETAILS THAT MAKE INTERFACES
-FEEL ALIVE. ALWAYS EXPLORING, ALWAYS LEARNING CRAFTING DIGITAL WORK
-THAT FEELS EXPRESSIVE, INTENTIONAL AND REALLY COOL.`}
-                  className="md:text-base lg:text-lg
-                             leading-relaxed uppercase font-medium text-left whitespace-pre-line"
-                />
-              </span>
-            </div>
+          <div className="mt-auto w-full max-w-6xl mx-auto min-w-0 px-6 md:px-16 md:flex md:justify-end md:pr-5 text-white mix-blend-difference">
+            <HeroParagraph className="text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed uppercase font-medium text-left" />
           </div>
         </div>
       )}

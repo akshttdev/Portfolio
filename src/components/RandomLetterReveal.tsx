@@ -5,10 +5,9 @@ import { useEffect, useRef, useState } from "react";
 type Props = {
   word: string;
   className?: string;
-  breakable?: boolean;
 };
 
-const RandomLetterReveal = ({ word, className, breakable = false }: Props) => {
+const RandomLetterReveal = ({ word, className }: Props) => {
   const containerRef = useRef<HTMLSpanElement>(null);
 
   const [revealedIndices, setRevealedIndices] = useState<Set<number>>(
@@ -82,19 +81,47 @@ const RandomLetterReveal = ({ word, className, breakable = false }: Props) => {
     }
   }, [isInView, word]);
 
+  // Render each space/newline as its own span, but group the letters of each
+  // word into one atomic inline-block. Splitting every letter into an
+  // independent inline box (the old behavior) gives the browser a break
+  // opportunity between ANY two letters once a line runs out of room, which
+  // produces ugly mid-word breaks ("EXPERIE-NCE") instead of wrapping at the
+  // nearest space. Grouping by word guarantees wraps only ever happen there.
+  const renderChar = (char: string, i: number) => (
+    <span
+      key={i}
+      className="transition-opacity duration-500 ease-in-out"
+      style={{ opacity: revealedIndices.has(i) ? 1 : 0 }}
+    >
+      {char}
+    </span>
+  );
+
+  const nodes: React.ReactNode[] = [];
+  let wordGroup: number[] = [];
+  const flushWord = () => {
+    if (wordGroup.length === 0) return;
+    nodes.push(
+      <span key={`w${wordGroup[0]}`} className="inline-block whitespace-nowrap">
+        {wordGroup.map((i) => renderChar(word[i], i))}
+      </span>,
+    );
+    wordGroup = [];
+  };
+
+  word.split("").forEach((char, i) => {
+    if (char === " " || char === "\n") {
+      flushWord();
+      nodes.push(renderChar(char, i));
+    } else {
+      wordGroup.push(i);
+    }
+  });
+  flushWord();
+
   return (
     <span ref={containerRef} className={`${className} inline-block`}>
-      {word.split("").map((char, i) => (
-        <span
-          key={i}
-          className="transition-opacity duration-500 ease-in-out"
-          style={{
-            opacity: revealedIndices.has(i) ? 1 : 0,
-          }}
-        >
-          {char === " " ? (breakable ? " " : " ") : char}
-        </span>
-      ))}
+      {nodes}
     </span>
   );
 };

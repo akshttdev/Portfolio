@@ -3,6 +3,7 @@
 import React, { FC, useEffect, useState } from "react";
 import Dither from "./Dither";
 import RandomLetterReveal from "./RandomLetterReveal";
+import HeroParagraph from "./HeroParagraph";
 
 const Hero: FC = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -37,7 +38,7 @@ const Hero: FC = () => {
         />
       </div>
 
-      <div className="flex flex-col px-6 md:px-16 w-full max-w-6xl pointer-events-none">
+      <div className="flex flex-col px-6 md:px-16 w-full max-w-6xl min-w-0 pointer-events-none">
         {/* ======================================================
             BIG TITLES — FULLY RESPONSIVE + 1240–1350 FIX
         ======================================================= */}
@@ -86,19 +87,8 @@ const Hero: FC = () => {
         {/* ======================================================
             SMALL PARAGRAPH — CLEAN, RESPONSIVE, AWWARDS STYLE
         ======================================================= */}
-        <div className="mt-6 md:mt-10 w-full md:flex md:justify-end md:pr-5">
-          <div className="max-w-[90%] sm:max-w-[80%] md:max-w-md text-left md:text-right">
-            <RandomLetterReveal
-              word={`I DESIGN AND BUILD SMOOTH, INTERACTIVE, AND VISUALLY ENGAGING DIGITAL 
-EXPERIENCES. I BLEND UI/UX, MOTION, AND CLEAN ENGINEERING TO CREATE 
-PRODUCTS THAT FEEL FAST, MODERN, AND HUMAN. I LOVE EXPERIMENTING 
-WITH MOTION, INTERACTION, AND MICRO DETAILS THAT MAKE INTERFACES 
-FEEL ALIVE. ALWAYS EXPLORING, ALWAYS LEARNING CRAFTING DIGITAL WORK 
-THAT FEELS EXPRESSIVE, INTENTIONAL AND REALLY COOL.`}
-              className="text-[0.5rem] sm:text-xs md:text-base opacity-80 
-                         leading-relaxed uppercase font-medium  text-left whitespace-pre-line "
-            />
-          </div>
+        <div className="mt-6 md:mt-10 w-full min-w-0 md:flex md:justify-end md:pr-5">
+          <HeroParagraph className="text-[0.5rem] sm:text-xs md:text-base opacity-80 leading-relaxed uppercase font-medium text-left" />
         </div>
       </div>
     </section>
