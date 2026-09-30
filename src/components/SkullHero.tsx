@@ -122,7 +122,7 @@ export default function SkullHero() {
           </div>
 
           {/* Paragraph — bottom-right */}
-          <div className="mt-auto w-full max-w-6xl mx-auto min-w-0 px-6 md:px-16 md:flex md:justify-end md:pr-5 text-white mix-blend-difference">
+          <div className="mt-auto w-full min-w-0 px-6 md:pl-16 md:pr-10 md:flex md:justify-end text-white mix-blend-difference">
             <HeroParagraph className="text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed uppercase font-medium text-left" />
           </div>
         </div>
