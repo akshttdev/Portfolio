@@ -38,17 +38,17 @@ export const projectsData = [
     url: "https://github.com/akshttdev/Torch",
   },
   {
-    id: "sortviz",
-    name: "Sorting Visualizer",
-    category: "JavaScript / DSA",
-    status: "2025",
-    client: "Self",
+    id: "knot",
+    name: "Knot",
+    category: "Distributed Systems / C++",
+    status: "2026",
+    client: "Personal",
     description:
-      "Classic sorting algorithm visualizer built using HTML, CSS, and JS — includes bubble, quick, merge, etc.",
+      "Distributed fault-tolerant key-value store written from scratch in C++20. Raft consensus with snapshots and membership changes, a custom LSM-tree storage engine, and a linearizability checker verified under chaos testing.",
     license: "MIT",
     img: "/images/projects/23.jpeg",
-    alt: "Sorting Visualizer",
-    url: "https://github.com/akshttdev/Sorting-Visualizer",
+    alt: "Knot distributed key-value store",
+    url: "https://github.com/akshttdev/knot",
   },
 
   {
