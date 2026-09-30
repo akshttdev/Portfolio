@@ -81,9 +81,9 @@ export default function SkullHero() {
       />
 
       {skullReady && (
-        <div className="relative z-10 flex flex-col h-full w-full pt-[38vh] pb-10 md:pb-14 pointer-events-none">
+        <div className="relative z-10 flex flex-col h-full w-full pt-[38vh] pb-10 md:pb-14 pointer-events-none text-white mix-blend-difference">
           {/* Heading — left aligned */}
-          <div className="text-white mix-blend-difference px-6 md:px-16">
+          <div className="px-6 md:px-16">
             <div>
               <RandomLetterReveal
                 word="SOFTWARE"
@@ -122,7 +122,7 @@ export default function SkullHero() {
           </div>
 
           {/* Paragraph — bottom-right */}
-          <div className="mt-auto w-full min-w-0 px-6 md:pl-16 md:pr-10 md:flex md:justify-end text-white mix-blend-difference">
+          <div className="mt-auto w-full min-w-0 px-6 md:pl-16 md:pr-10 md:flex md:justify-end">
             <HeroParagraph className="text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed uppercase font-medium text-left" />
           </div>
         </div>
