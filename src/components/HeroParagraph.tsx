@@ -11,7 +11,7 @@ type Props = {
 
 export default function HeroParagraph({ className }: Props) {
   return (
-    <div className="min-w-0 max-w-[90%] sm:max-w-[80%] md:max-w-md text-left md:text-right">
+    <div className="min-w-0 max-w-[90%] sm:max-w-[80%] md:max-w-xl lg:max-w-2xl text-left md:text-right">
       <RandomLetterReveal word={PARAGRAPH_TEXT} className={className} />
     </div>
   );

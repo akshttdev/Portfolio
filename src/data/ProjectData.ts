@@ -40,7 +40,7 @@ export const projectsData = [
   {
     id: "knot",
     name: "Knot",
-    category: "Distributed Systems / C++",
+    category: "Distributed Systems",
     status: "2026",
     client: "Personal",
     description:
