@@ -67,6 +67,8 @@ const Navbar = () => {
           </a>
           <a
             href="https://drive.google.com/drive/folders/1jZGznxWpaR7PZEiohbVRxG_3Sn1WAIGg?dmr=1&ec=wgc-drive-hero-goto"
+            target="_blank"
+            rel="noopener noreferrer"
             className="nav-txt"
           >
             <TextScramble enterText="RESUME" />
@@ -137,6 +139,8 @@ const Navbar = () => {
             <div className="w-[3.7rem] text-left">
               <a
                 href="https://drive.google.com/drive/folders/1jZGznxWpaR7PZEiohbVRxG_3Sn1WAIGg?dmr=1&ec=wgc-drive-hero-goto"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="nav-txt"
               >
                 <TextScramble enterText="RESUME" />

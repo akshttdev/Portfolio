@@ -4,13 +4,11 @@ import Image from "next/image";
 import { useRef } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { projectsData } from "@/data/ProjectData";
-import { useRouter } from "next/navigation";
 import { arraySlideUpAnimation, spanAnimation } from "@/animations/anim";
 import RandomLetterReveal from "@/components/RandomLetterReveal";
 import { useMedia } from "react-use";
 
 const Projects = () => {
-  const router = useRouter();
   const container = useRef<HTMLDivElement | null>(null);
   const text = useRef<HTMLDivElement | null>(null);
 
@@ -99,7 +97,9 @@ const Projects = () => {
               key={i}
               style={{ x, y }}
               className="w-fit mx-auto group max-md:w-full cursor-pointer"
-              onClick={() => router.push(`${project.url}`)}
+              onClick={() =>
+                window.open(project.url, "_blank", "noopener,noreferrer")
+              }
             >
               <div className="size-full overflow-hidden">
                 <Image
