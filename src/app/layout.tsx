@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Akshat | Software Developer",
-  description: "vibe coder",
+  description: "Software developer building full-stack apps and systems projects, including Knot, a distributed key-value store. Explore my work, skills and experience.",
   icons: {
     icon: "/logo.png",
   },
