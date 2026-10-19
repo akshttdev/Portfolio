@@ -12,7 +12,7 @@ type ThreeInstance = {
 
 // WebGPU init can hang forever (never rejects) on some browsers/GPUs, which
 // would leave the preloader stuck. Bail out to the non-WebGPU hero instead.
-const INIT_TIMEOUT_MS = 8000;
+const INIT_TIMEOUT_MS = 15000;
 
 export default function SkullHero() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -36,6 +36,10 @@ export default function SkullHero() {
 
     (async () => {
       try {
+        // Warm the HTTP cache so the models are ready when the loader asks.
+        ["man_comp-transformed", "skeleton_comp-transformed"].forEach((m) =>
+          fetch(`/models/${m}.glb`).catch(() => {}),
+        );
         const { default: Three } = await import("./skull/core/Three.js");
         if (cancelled || !containerRef.current) return;
         const three = new Three(containerRef.current);
@@ -111,37 +115,25 @@ export default function SkullHero() {
           <div className="px-6 md:px-16">
             <div>
               <RandomLetterReveal
-                word="SOFTWARE"
-                className="font-extrabold tracking-tight leading-[0.9]
-                          text-[1.8rem] sm:text-[2.3rem]
-                          md:text-[3.25rem]
-                          lg:text-[4rem]
-                          xl:text-[4.5rem]
-                          2xl:text-[5.5rem] mb-2 md:mb-3"
+                word="SOFTWARE DEVELOPER"
+                className="font-extrabold tracking-tight leading-[0.9] whitespace-nowrap
+                          text-[1.2rem] sm:text-[1.6rem]
+                          md:text-[2.25rem]
+                          lg:text-[3rem]
+                          xl:text-[3.5rem]
+                          2xl:text-[4.25rem] mb-2 md:mb-3"
               />
             </div>
 
             <div>
               <RandomLetterReveal
-                word="DEVELOPER"
-                className="font-extrabold tracking-tight leading-[0.9]
-                          text-[1.8rem] sm:text-[2.3rem]
-                          md:text-[3.25rem]
-                          lg:text-[4rem]
-                          xl:text-[4.5rem]
-                          2xl:text-[5.5rem] mb-2 md:mb-3"
-              />
-            </div>
-
-            <div>
-              <RandomLetterReveal
-                word="BASED IN MUNICH "
-                className="font-extrabold tracking-tight leading-[0.9]
-                          text-[1.8rem] sm:text-[2.3rem]
-                          md:text-[3.25rem]
-                          lg:text-[4rem]
-                          xl:text-[4.5rem]
-                          2xl:text-[5.5rem]"
+                word="BASED IN MUNICH, GERMANY"
+                className="font-extrabold tracking-tight leading-[0.9] whitespace-nowrap
+                          text-[1.2rem] sm:text-[1.6rem]
+                          md:text-[2.25rem]
+                          lg:text-[3rem]
+                          xl:text-[3.5rem]
+                          2xl:text-[4.25rem]"
               />
             </div>
           </div>

@@ -48,7 +48,7 @@ function PreLoader({ children }: PreLoaderProps) {
     // Safety net: never let the preloader block the site indefinitely.
     const fallback = setTimeout(() => {
       if (!cancelled) setSkullDone(true);
-    }, 10000);
+    }, 12000);
     return () => {
       cancelled = true;
       clearTimeout(fallback);
@@ -57,8 +57,8 @@ function PreLoader({ children }: PreLoaderProps) {
 
   useEffect(() => {
     if (loadingComplete) {
-      const t1 = setTimeout(() => setReturnAnimation(true), 900);
-      const t2 = setTimeout(() => setHideOverlay(true), 1500);
+      const t1 = setTimeout(() => setReturnAnimation(true), 350);
+      const t2 = setTimeout(() => setHideOverlay(true), 850);
       return () => {
         clearTimeout(t1);
         clearTimeout(t2);
@@ -96,8 +96,8 @@ function PreLoader({ children }: PreLoaderProps) {
                           <CountUp
                             start={0}
                             end={100}
-                            duration={2.2}
-                            delay={0.25}
+                            duration={1.1}
+                            delay={0.1}
                             easingFn={(t, b, c, d) => {
                               t /= d;
                               return -c * t * (t - 2) + b;

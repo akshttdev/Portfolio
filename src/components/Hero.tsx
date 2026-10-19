@@ -38,49 +38,29 @@ const Hero: FC = () => {
         />
       </div>
 
-      <div className="flex flex-col px-6 md:px-16 w-full max-w-6xl min-w-0 pointer-events-none">
+      <div className="flex flex-col px-6 md:px-16 w-full max-w-7xl min-w-0 pointer-events-none">
         {/* ======================================================
             BIG TITLES — FULLY RESPONSIVE + 1240–1350 FIX
         ======================================================= */}
-        <div className="mt-24 md:mt-32 ml-0 lg:ml-0 xl:ml-[-10rem]">
+        <div className="mt-24 md:mt-32 ml-0">
           <RandomLetterReveal
-            word="SOFTWARE"
-            className="block font-extrabold tracking-tight leading-[0.9]
-                      text-[2.8rem] sm:text-[3.5rem]
-                      md:text-[5rem]
-                      lg:text-[6rem]
-                      xl:text-[7rem]
-                      2xl:text-[9rem] mb-2 md:mb-4"
+            word="SOFTWARE DEVELOPER"
+            className="block whitespace-nowrap font-extrabold tracking-tight leading-[0.9]
+                      text-[1.35rem] sm:text-[1.9rem]
+                      md:text-[2.75rem]
+                      lg:text-[3.5rem]
+                      xl:text-[4.25rem]
+                      2xl:text-[5rem] mb-2 md:mb-4"
           />
 
           <RandomLetterReveal
-            word="DEVELOPER"
-            className="block font-extrabold tracking-tight leading-[0.9]
-                      text-[2.8rem] sm:text-[3.5rem]
-                      md:text-[5rem]
-                      lg:text-[6rem]
-                      xl:text-[7rem]
-                      2xl:text-[9rem] mb-2 md:mb-4"
-          />
-
-          <RandomLetterReveal
-            word="BASED IN MUNICH,"
-            className="block font-extrabold tracking-tight leading-[0.9]
-                      text-[2.8rem] sm:text-[3.5rem]
-                      md:text-[5rem]
-                      lg:text-[6rem]
-                      xl:text-[7rem]
-                      2xl:text-[9rem] mb-2 md:mb-4"
-          />
-
-          <RandomLetterReveal
-            word="GERMANY"
-            className="block font-extrabold tracking-tight leading-[0.9]
-                      text-[2.8rem] sm:text-[3.5rem]
-                      md:text-[5rem]
-                      lg:text-[6rem]
-                      xl:text-[7rem]
-                      2xl:text-[9rem]"
+            word="BASED IN MUNICH, GERMANY"
+            className="block whitespace-nowrap font-extrabold tracking-tight leading-[0.9]
+                      text-[1.35rem] sm:text-[1.9rem]
+                      md:text-[2.75rem]
+                      lg:text-[3.5rem]
+                      xl:text-[4.25rem]
+                      2xl:text-[5rem]"
           />
         </div>
 
