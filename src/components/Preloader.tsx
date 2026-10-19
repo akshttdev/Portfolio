@@ -45,8 +45,13 @@ function PreLoader({ children }: PreLoaderProps) {
     skullReadyPromise.then(() => {
       if (!cancelled) setSkullDone(true);
     });
+    // Safety net: never let the preloader block the site indefinitely.
+    const fallback = setTimeout(() => {
+      if (!cancelled) setSkullDone(true);
+    }, 10000);
     return () => {
       cancelled = true;
+      clearTimeout(fallback);
     };
   }, []);
 

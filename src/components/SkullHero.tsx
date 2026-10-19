@@ -10,6 +10,10 @@ type ThreeInstance = {
   dispose: () => void;
 };
 
+// WebGPU init can hang forever (never rejects) on some browsers/GPUs, which
+// would leave the preloader stuck. Bail out to the non-WebGPU hero instead.
+const INIT_TIMEOUT_MS = 8000;
+
 export default function SkullHero() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [webgpuSupported, setWebgpuSupported] = useState<boolean | null>(null);
@@ -35,8 +39,29 @@ export default function SkullHero() {
         const { default: Three } = await import("./skull/core/Three.js");
         if (cancelled || !containerRef.current) return;
         const three = new Three(containerRef.current);
-        await three.run();
-        await three.scene?.ready;
+        let timer: ReturnType<typeof setTimeout> | undefined;
+        const timeout = new Promise<never>((_, reject) => {
+          timer = setTimeout(
+            () => reject(new Error("WebGPU init timed out")),
+            INIT_TIMEOUT_MS,
+          );
+        });
+        try {
+          await Promise.race([
+            (async () => {
+              await three.run();
+              await three.scene?.ready;
+            })(),
+            timeout,
+          ]);
+        } catch (err) {
+          try {
+            three.dispose();
+          } catch {}
+          throw err;
+        } finally {
+          clearTimeout(timer);
+        }
         if (cancelled) {
           three.dispose();
           return;
