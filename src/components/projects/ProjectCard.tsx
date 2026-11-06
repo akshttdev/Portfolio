@@ -14,6 +14,8 @@ type Props = {
   spread: number;
 };
 
+const CARD_W = 500;
+
 export default function ProjectCard({ project, index: i, progress, spread }: Props) {
   // Cards fan out alternately left/right and up/down as the section scrolls by
   const drift = spread > 0;
@@ -28,15 +30,19 @@ export default function ProjectCard({ project, index: i, progress, spread }: Pro
       target="_blank"
       rel="noopener noreferrer"
       style={{ x, y }}
-      className="block w-fit mx-auto group max-md:w-full cursor-pointer"
+      // Own GPU layer: the card glides at sub-pixel precision instead of being repainted every scroll frame
+      className="block w-fit mx-auto group max-md:w-full cursor-pointer will-change-transform"
     >
       <div className="size-full overflow-hidden">
+        {/* Real proportions, not a 500x500 placeholder: the photos aren't square, so each card used to resize
+            by ~120px the moment its image loaded, shoving every card below it mid-scroll */}
         <Image
           src={project.img}
-          width={500}
-          height={500}
+          width={CARD_W}
+          height={Math.round((CARD_W * project.imgSize[1]) / project.imgSize[0])}
           alt={project.alt}
-          className="object-cover group-hover:scale-125 transition-all duration-500 max-md:size-full"
+          style={{ aspectRatio: `${project.imgSize[0]} / ${project.imgSize[1]}` }}
+          className="object-cover group-hover:scale-125 transition-transform duration-500 max-md:size-full"
         />
       </div>
 
