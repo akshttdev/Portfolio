@@ -19,7 +19,7 @@ import { getLenis } from "@/lib/lenis";
  *  when the photo's full width/height would otherwise already be on screen. */
 /** face: where the face is in the photo ({x, y} centre and h = face height, all fractions from the top-left).
  *  anchor: when set on one slide with a face, every other slide with a face is zoomed/shifted so the face
- *  lands at the same screen position and size as the anchor's — the morph then flows face-to-face.
+ *  lands at the same screen position and size as the anchor's, so the morph flows face-to-face.
  *  The anchor itself is shown un-zoomed (or at its own zoom), framed as close to centre as the photo allows. */
 export type DepthSlide = {
   image: string;
@@ -241,7 +241,7 @@ export default function DepthMorph({ slides, title }: Props) {
     type Loaded = {
       img: WebGLTexture; depth: WebGLTexture; aspect: number;
       focus: [number, number]; zoom: number;
-      face: [number, number, number] | null; // x, y (from bottom), height — texture space
+      face: [number, number, number] | null; // x, y (from bottom), height, in texture space
     };
     const loaded: (Loaded | null)[] = slides.map(() => null);
     let disposed = false;

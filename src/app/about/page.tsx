@@ -19,7 +19,7 @@ const aboutSlides: DepthSlide[] = [
   { image: "/images/about/kurta.webp", depth: "/images/about/kurta-depth.webp", label: "Nights out", focus: [0.5, 0.58] },
 ];
 
-// Other photos, still in /public/images/about — swap in by replacing entries above
+// Other photos, still in /public/images/about. Swap in by replacing entries above
 // (each photo also has a lighter .webp next to the .jpg; prefer the .webp):
 // { image: "/images/about/home.jpg", depth: "/images/about/home-depth.webp", label: "Off hours" },
 // { image: "/images/about/flowers.jpg", depth: "/images/about/flowers-depth.webp", label: "Flower show" },
@@ -42,7 +42,7 @@ const bgWords = [
 ];
 
 export default function AboutPage() {
-  // Start downloading the first photo + depth map with the HTML, not after the JS boots — it's the first
+  // Start downloading the first photo + depth map with the HTML, not after the JS boots. It's the first
   // thing a visitor sees on this page.
   preload(aboutSlides[0].image, { as: "image", fetchPriority: "high" });
   preload(aboutSlides[0].depth, { as: "image", fetchPriority: "high" });
@@ -151,12 +151,12 @@ export default function AboutPage() {
             <p className="max-sm:text-s text-[1.1rem] opacity-95 leading-relaxed font-semibold uppercase">
               He learns fast, experiments without fear, and pushes visuals until
               they stop feeling random. Whether it's code, motion, product
-              logic, or design systems — the goal is always the same: make it
+              logic, or design systems, the goal is always the same: make it
               feel alive and make it feel right.
             </p>
 
             <p className="max-sm:text-s text-[1.1rem] opacity-95 leading-relaxed font-semibold uppercase">
-              Away from the monitor, he’s still restless — traveling whenever he
+              Away from the monitor, he’s still restless: traveling whenever he
               can, playing guitar, running long distances, obsessing over
               football, blasting metal or Bollywood..
             </p>

@@ -24,7 +24,7 @@ const RandomLetterReveal = ({ word, className }: Props) => {
     hasAnimatedRef.current = true;
   };
 
-  // Intersection Observer — detect when visible
+  // Intersection Observer: detect when visible
   useEffect(() => {
     const node = containerRef.current;
     if (!node) return;
@@ -45,7 +45,7 @@ const RandomLetterReveal = ({ word, className }: Props) => {
     return () => observer.disconnect();
   }, []);
 
-  // Watch scroll — if user scrolls fast past it, force reveal
+  // Watch scroll: if user scrolls fast past it, force reveal
   useEffect(() => {
     const onScroll = () => {
       const node = containerRef.current;

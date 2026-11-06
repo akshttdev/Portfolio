@@ -64,7 +64,7 @@ const Background: FC = () => {
         </h1>
       </div>
 
-      {/* QUOTE — stays in normal layout, NO absolute positioning */}
+      {/* QUOTE: stays in normal layout, NO absolute positioning */}
       <div className="mt-6 md:mt-10 w-full md:flex md:justify-end md:pr-5 z-20 mix-blend-difference">
         <div
           className="
@@ -87,7 +87,7 @@ const Background: FC = () => {
             "
           >
             " I’m wired to fixate, break things apart, and push them past the
-            obvious. It’s never clean, never linear — just persistence until
+            obvious. It’s never clean, never linear, just persistence until
             meaning shows up. Nothing extravagant. "
           </p>
         </div>

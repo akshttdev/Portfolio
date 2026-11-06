@@ -40,7 +40,7 @@ export const fbm = Fn(([x, numOctaves]) => {
 	const s = sin(angle);
 	const xx = x.toVar();
 
-	// 4 octaves (unrolled — TSL has no loops)
+	// 4 octaves (unrolled, since TSL has no loops)
 	v.assign(add(v, mul(a, noise(xx))));
 	xx.assign(add(mul(vec2(sub(mul(xx.x, c), mul(xx.y, s)), add(mul(xx.x, s), mul(xx.y, c))), 2.0), shift));
 	a.assign(mul(a, 0.5));

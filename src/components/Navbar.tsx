@@ -24,19 +24,19 @@ const Navbar = () => {
     <nav className="fixed top-0 w-full z-[1001] px-6 py-6 select-none mix-blend-exclusion">
       {/* ================= MOBILE NAV (single line) ================= */}
       <div className="md:hidden w-full flex items-center justify-between whitespace-nowrap gap-x-3 px-1">
-        {/* Left — AKSHAT */}
+        {/* Left: AKSHAT */}
         <span onClick={handleHomeClick} className="nav-txt cursor-pointer">
           <TextScramble enterText="AKSHAT" />
         </span>
 
-        {/* Center — ABOUT (year hidden on mobile to stop the bar from collapsing) */}
+        {/* Center: ABOUT (year hidden on mobile to stop the bar from collapsing) */}
         <div className="flex items-center gap-x-3">
           <Link href="/about" className="nav-txt">
             <TextScramble enterText="ABOUT" />
           </Link>
         </div>
 
-        {/* Right — SOCIALS */}
+        {/* Right: SOCIALS */}
         <div className="flex items-center gap-x-3">
           <a
             href="https://x.com/akshttdev"
@@ -78,14 +78,14 @@ const Navbar = () => {
 
       {/* ================= DESKTOP NAV (unchanged) ================= */}
       <ul className="relative w-full h-full hidden md:block">
-        {/* LEFT — AKSHAT */}
+        {/* LEFT: AKSHAT */}
         <li className="absolute left-0 top-1/2 -translate-y-1/2">
           <span onClick={handleHomeClick} className="nav-txt cursor-pointer">
             <TextScramble enterText="AKSHAT" />
           </span>
         </li>
 
-        {/* CENTER — ABOUT + YEAR */}
+        {/* CENTER: ABOUT + YEAR */}
         <li className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <div className="flex items-center gap-x-18">
             <div className="w-[5rem] text-left">
@@ -97,7 +97,7 @@ const Navbar = () => {
           </div>
         </li>
 
-        {/* RIGHT — SOCIALS */}
+        {/* RIGHT: SOCIALS */}
         <li className="absolute right-0 top-1/2 -translate-y-1/2">
           <div className="flex items-center gap-x-6">
             <div className=" w-[1.8rem] text-left">

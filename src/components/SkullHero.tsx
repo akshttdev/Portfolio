@@ -23,7 +23,7 @@ const INIT_TIMEOUT_MS = 15000;
 
 // First-visit critical path: the 3D engine chunk + models are what the preloader waits on. Start them as soon
 // as this module is evaluated in the browser (in parallel with hydration) instead of after React's first
-// render + effects. Only for WebGPU browsers — others get the lightweight fallback hero and skip the download.
+// render + effects. Only for WebGPU browsers; others get the lightweight fallback hero and skip the download.
 const HAS_WEBGPU = typeof navigator !== "undefined" && "gpu" in navigator;
 const earlyThree = HAS_WEBGPU ? import("./skull/core/Three.js") : null;
 earlyThree?.catch(() => {}); // a failure is handled where it's awaited; avoid an "unhandled rejection" before then
@@ -127,7 +127,7 @@ export default function SkullHero() {
 
       {skullReady && (
         <div className="relative z-10 flex flex-col h-full w-full pt-[38vh] pb-10 md:pb-14 pointer-events-none text-white mix-blend-difference">
-          {/* Heading — left aligned */}
+          {/* Heading: left aligned */}
           <div className="px-6 md:px-16">
             <div>
               <RandomLetterReveal
@@ -154,7 +154,7 @@ export default function SkullHero() {
             </div>
           </div>
 
-          {/* Paragraph — bottom-right */}
+          {/* Paragraph: bottom-right */}
           <div className="mt-auto w-full min-w-0 px-6 md:pl-16 md:pr-10 md:flex md:justify-end">
             <HeroParagraph className="text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed uppercase font-medium text-left" />
           </div>

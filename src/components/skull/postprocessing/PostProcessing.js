@@ -103,7 +103,7 @@ export default class PostProcessing {
 			float(0.985),
 		);
 
-		// No color tint — keep scene neutral for the monochrome pass
+		// No color tint: keep scene neutral for the monochrome pass
 		const lowContrast = desaturated;
 
 		// 8x8 ordered Bayer dither (per-channel), then blend with original scene

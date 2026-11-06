@@ -83,7 +83,7 @@ export default class FluidSim {
 			floodcolor.assign(blendDarken(floodcolor, texel4.rgb));
 			floodcolor.assign(blendDarken(floodcolor, texel5.rgb));
 
-			// Blend with new trail input (flip Y — canvas texture has opposite Y to render targets in WebGPU)
+			// Blend with new trail input (flip Y: canvas texture has opposite Y to render targets in WebGPU)
 			const flippedUV = vec2(uvCoord.x, sub(float(1.0), uvCoord.y));
 			const input = this.inputNode.sample(flippedUV);
 			const combined = blendDarken(floodcolor, input.rgb);

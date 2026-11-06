@@ -40,7 +40,7 @@ const Hero: FC = () => {
 
       <div className="flex flex-col px-6 md:px-16 w-full max-w-7xl min-w-0 pointer-events-none">
         {/* ======================================================
-            BIG TITLES — FULLY RESPONSIVE + 1240–1350 FIX
+            BIG TITLES: FULLY RESPONSIVE + 1240–1350 FIX
         ======================================================= */}
         <div className="mt-24 md:mt-32 ml-0">
           <RandomLetterReveal
@@ -65,7 +65,7 @@ const Hero: FC = () => {
         </div>
 
         {/* ======================================================
-            SMALL PARAGRAPH — CLEAN, RESPONSIVE, AWWARDS STYLE
+            SMALL PARAGRAPH: CLEAN, RESPONSIVE, AWWARDS STYLE
         ======================================================= */}
         <div className="mt-6 md:mt-10 w-full min-w-0 md:flex md:justify-end md:pr-5">
           <HeroParagraph className="text-[0.5rem] sm:text-xs md:text-base opacity-80 leading-relaxed uppercase font-medium text-left" />

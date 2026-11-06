@@ -44,7 +44,7 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* CONTACT LINKS — HORIZONTAL WITH PROPER SPACING */}
+        {/* CONTACT LINKS: HORIZONTAL WITH PROPER SPACING */}
         <div className="flex flex-wrap items-center gap-6 md:gap-8 mt-12 text-3xl md:text-4xl max-sm:pt-10 pt-60 font-bold uppercase">
           <a
             href="mailto:akshttt.dev@gmail.com"
@@ -96,7 +96,7 @@ export default function Footer() {
       {/* BOTTOM BAR */}
       <div className="relative z-10 pt-4 pb-4 flex justify-between items-end flex-wrap gap-6">
         <div className="text-sm md:text-base opacity-70 leading-relaxed max-w-md font-medium uppercase">
-          because great work isn't luck — it's obsession, patience, and a
+          because great work isn't luck. It's obsession, patience, and a
           refusal to ship anything mid.
         </div>
 

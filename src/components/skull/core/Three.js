@@ -6,7 +6,7 @@ import FluidSim from "../postprocessing/FluidSim";
 import PostProcessing from "../postprocessing/PostProcessing";
 import { getLenis } from "../../../lib/lenis";
 
-// Fluid sim / mouse trail are soft, blurred effects — rendering them at full
+// Fluid sim / mouse trail are soft, blurred effects, so rendering them at full
 // resolution is wasted cost (especially on 4K/high-DPI screens). Half res is
 // visually indistinguishable once sampled through the bloom/composite pass.
 const SIM_SCALE = 0.5;
@@ -48,7 +48,7 @@ class Three {
 		);
 	}
 
-	// The scene sits in a tall single-page layout — once the user scrolls past
+	// The scene sits in a tall single-page layout. Once the user scrolls past
 	// it (or switches tabs), it would otherwise keep rendering forever in the
 	// background, burning GPU/CPU and making the rest of the page feel laggy.
 	#addVisibilityHandling() {

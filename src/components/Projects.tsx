@@ -142,7 +142,7 @@ const Projects = () => {
           <div className="text-left">
             Stuff changes. Taste shifts. What felt <br />
             insane one night might look mid the next morning. <br />
-            These are just things I made that felt right — <br />
+            These are just things I made that felt right, <br />
           </div>
           <div className="w-full flex flex-col md:flex-row md:items-center justify-between mt-1 gap-2 md:gap-0">
             <div className="text-left">

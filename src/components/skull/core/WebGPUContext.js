@@ -1,11 +1,11 @@
 import * as THREE from "three/webgpu";
 
 // The scene renders two full scenes plus bloom/fluid-sim/grain/dither passes
-// every frame — cost scales with pixel count. On a 4K/large display that's
+// every frame, so cost scales with pixel count. On a 4K/large display that's
 // 4x+ the fragment-shader work of 1080p for no visible benefit at hero-blur
 // distances, and was measured to make the scene noticeably laggy. Cap the
 // internal render resolution and let the canvas (already 100% width/height)
-// upscale it — the softness is imperceptible against the film-grain/dither
+// upscale it. The softness is imperceptible against the film-grain/dither
 // look, but the GPU cost stays flat above this budget.
 const MAX_RENDER_PIXELS = 1920 * 1080;
 
