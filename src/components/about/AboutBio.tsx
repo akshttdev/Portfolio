@@ -9,7 +9,7 @@ export default function AboutBio() {
     <main className="w-full min-h-screen flex items-center justify-end md:px-20 relative z-20 pt-60 max-sm:justify-center max-sm:pt-40">
       <FadeUp className="max-w-xl space-y-8 text-left max-sm:max-w-sm max-sm:text-left max-sm:pt-10">
         <p className={P}>
-          <HoverImageReveal label="Akshat" image="/images/about/home.jpg" /> is someone who runs on curiosity,
+          <HoverImageReveal label="Akshat" image="/images/about/cat.jpg" width={270} height={480} /> is someone who runs on curiosity,
           instinct, and a slightly obsessive need to make things feel intentional. He digs deep into ideas, takes
           them apart, questions the obvious, and rebuilds them with cleaner structure and sharper personality.
         </p>

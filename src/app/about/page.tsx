@@ -6,7 +6,9 @@ import Footer from "@/components/layout/Footer";
 import DepthMorph from "@/components/depth-morph/DepthMorph";
 import AboutBackdrop from "@/components/about/AboutBackdrop";
 import AboutBio from "@/components/about/AboutBio";
+import ScrollSequence from "@/components/scroll-sequence/ScrollSequence";
 import { aboutSlides } from "@/data/aboutSlides";
+import { aboutClip } from "@/data/aboutClip";
 
 export const metadata: Metadata = { title: "About" };
 
@@ -26,6 +28,9 @@ export default function AboutPage() {
         <AboutBackdrop />
         <AboutBio />
       </div>
+
+      {/* Also outside the overflow-hidden wrapper, for the same reason as DepthMorph */}
+      <ScrollSequence seq={aboutClip} text="Nice to meet you" />
 
       <Footer />
     </HorizontalTransition>
