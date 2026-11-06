@@ -1,12 +1,11 @@
 import * as THREE from "three/webgpu";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import WebGPUContext from "../core/WebGPUContext";
 import { CameraRig } from "../utils/CameraRig";
 import InstancedModel from "../utils/InstancedModel";
 
 export default class Scene {
-	constructor() {
-		this.context = new WebGPUContext();
+	constructor(context) {
+		this.context = context;
 		const { width, height } = this.context.getFullScreenDimensions();
 		this.width = width;
 		this.height = height;
@@ -77,5 +76,16 @@ export default class Scene {
 		this.height = height;
 		this.camera.aspect = width / height;
 		this.camera.updateProjectionMatrix();
+	}
+
+	dispose() {
+		this.cameraRig?.dispose();
+		for (const scene of [this.solidScene, this.wireScene]) {
+			scene.traverse((obj) => {
+				obj.geometry?.dispose();
+				obj.material?.dispose();
+			});
+		}
+		this.envMap?.dispose();
 	}
 }

@@ -1,4 +1,17 @@
-export const projectsData = [
+export type Project = {
+  id: string;
+  name: string;
+  category: string;
+  status: string;
+  client: string;
+  description: string;
+  license: string;
+  img: string;
+  alt: string;
+  url: string;
+};
+
+export const projectsData: Project[] = [
   {
     id: "synapse",
     name: "Synapse",

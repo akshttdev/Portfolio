@@ -26,3 +26,10 @@ export function initLenis(): Lenis | null {
 export function getLenis(): Lenis | null {
   return instance;
 }
+
+/** Glides back to the top. Goes through Lenis when it's running, so the two never fight over the scroll. */
+export function scrollToTop(duration = 1.4) {
+  const lenis = getLenis();
+  if (lenis) lenis.scrollTo(0, { duration });
+  else window.scrollTo({ top: 0, behavior: "smooth" });
+}

@@ -25,6 +25,7 @@ class Three {
 	async run() {
 		this.context = new WebGPUContext(this.container);
 		await this.context.init();
+		if (this.disposed) return; // unmounted while WebGPU was starting
 
 		this.#setup();
 		this.#addVisibilityHandling();
@@ -35,7 +36,7 @@ class Three {
 	#setup() {
 		const { width, height } = this.context.getFullScreenDimensions();
 		const pr = this.context.pixelRatio;
-		this.scene = new Scene();
+		this.scene = new Scene(this.context);
 		this.mouseTrail = new MouseTrail(width * pr * SIM_SCALE, height * pr * SIM_SCALE);
 		this.fluidSim = new FluidSim(width * pr * SIM_SCALE, height * pr * SIM_SCALE);
 
@@ -141,6 +142,11 @@ class Three {
 		document.removeEventListener("visibilitychange", this.onVisibilityChange);
 		this.io?.disconnect();
 		this.io = null;
+		// Free GPU memory: without this every visit to the home page left the previous scene allocated
+		this.postProcessing?.dispose();
+		this.fluidSim?.dispose();
+		this.mouseTrail?.dispose();
+		this.scene?.dispose();
 		if (this.context) {
 			this.context.dispose();
 			this.context = null;

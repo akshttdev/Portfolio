@@ -11,6 +11,7 @@ export default class MouseTrail {
 		this.fadeInSpeed = 0.1;
 		this.fadeOutSpeed = 0.1;
 		this.moveThreshold = 0.5;
+		this.isBlank = false;
 
 		this.#createCanvas(width, height);
 		this.#createTexture();

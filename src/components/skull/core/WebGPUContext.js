@@ -11,16 +11,10 @@ const MAX_RENDER_PIXELS = 1920 * 1080;
 
 class WebGPUContext {
 	constructor(container) {
-		if (!!WebGPUContext.instance) {
-			return WebGPUContext.instance;
-		}
-
 		this.container = container;
 		this.renderer = null;
 		this.canvas = null;
 		this.pixelRatio = Math.min(window.devicePixelRatio, 1.0);
-
-		WebGPUContext.instance = this;
 	}
 
 	async init() {
@@ -86,7 +80,6 @@ class WebGPUContext {
 		}
 		this.canvas = null;
 		this.container = null;
-		WebGPUContext.instance = null;
 	}
 }
 

@@ -25,14 +25,19 @@ export class CameraRig {
 
 		this._targetPos = [0, 0, 0];
 
+		this.onMouseMove = (e) => {
+			this.mouseNormalized.x = e.clientX / window.innerWidth;
+			this.mouseNormalized.y = 1 - e.clientY / window.innerHeight;
+			this.pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+			this.pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+		};
 		if (!this.isTouch) {
-			window.addEventListener("mousemove", (e) => {
-				this.mouseNormalized.x = e.clientX / window.innerWidth;
-				this.mouseNormalized.y = 1 - e.clientY / window.innerHeight;
-				this.pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
-				this.pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
-			});
+			window.addEventListener("mousemove", this.onMouseMove, { passive: true });
 		}
+	}
+
+	dispose() {
+		window.removeEventListener("mousemove", this.onMouseMove);
 	}
 
 	update(delta, elapsed) {
