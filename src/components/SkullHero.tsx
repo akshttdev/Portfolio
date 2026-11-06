@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import Hero from "./Hero";
+import dynamic from "next/dynamic";
+
+// The fallback hero pulls in three.js + react-three-fiber + postprocessing. Load it only for browsers
+// that actually need it, instead of shipping it in the main bundle to every visitor.
+const Hero = dynamic(() => import("./Hero"), {
+  ssr: false,
+  loading: () => <section className="relative w-full h-screen overflow-hidden bg-[#080808]" />,
+});
 import RandomLetterReveal from "./RandomLetterReveal";
 import HeroParagraph from "./HeroParagraph";
 import { markSkullReady } from "@/lib/skullReady";
@@ -13,6 +20,18 @@ type ThreeInstance = {
 // WebGPU init can hang forever (never rejects) on some browsers/GPUs, which
 // would leave the preloader stuck. Bail out to the non-WebGPU hero instead.
 const INIT_TIMEOUT_MS = 15000;
+
+// First-visit critical path: the 3D engine chunk + models are what the preloader waits on. Start them as soon
+// as this module is evaluated in the browser (in parallel with hydration) instead of after React's first
+// render + effects. Only for WebGPU browsers — others get the lightweight fallback hero and skip the download.
+const HAS_WEBGPU = typeof navigator !== "undefined" && "gpu" in navigator;
+const earlyThree = HAS_WEBGPU ? import("./skull/core/Three.js") : null;
+earlyThree?.catch(() => {}); // a failure is handled where it's awaited; avoid an "unhandled rejection" before then
+if (HAS_WEBGPU) {
+  ["man_comp-transformed", "skeleton_comp-transformed"].forEach((m) =>
+    fetch(`/models/${m}.glb`).catch(() => {}),
+  );
+}
 
 export default function SkullHero() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -36,11 +55,8 @@ export default function SkullHero() {
 
     (async () => {
       try {
-        // Warm the HTTP cache so the models are ready when the loader asks.
-        ["man_comp-transformed", "skeleton_comp-transformed"].forEach((m) =>
-          fetch(`/models/${m}.glb`).catch(() => {}),
-        );
-        const { default: Three } = await import("./skull/core/Three.js");
+        // Already downloading since module load (see earlyThree above).
+        const { default: Three } = await (earlyThree ?? import("./skull/core/Three.js"));
         if (cancelled || !containerRef.current) return;
         const three = new Three(containerRef.current);
         let timer: ReturnType<typeof setTimeout> | undefined;

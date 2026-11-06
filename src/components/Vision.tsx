@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import React, { useRef, FC } from "react";
 
@@ -14,6 +14,10 @@ const Background: FC = () => {
 
   const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
 
+  // The background is a fixed, full-screen layer revealed by this section's clip-path. Without this the
+  // browser keeps compositing it the whole time (e.g. while the hero is on screen); only show it when near.
+  const isNear = useInView(container, { margin: "25% 0px 25% 0px" });
+
   return (
     <section
       ref={container}
@@ -21,14 +25,19 @@ const Background: FC = () => {
       style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}
     >
       {/* Parallax Background */}
-      <div className="fixed top-[-10vh] left-0 w-full h-[120vh] md:h-[130vh]">
-        <motion.div style={{ y }} className="relative w-full h-full">
+      <div
+        className="fixed top-[-10vh] left-0 w-full h-[120vh] md:h-[130vh]"
+        style={{ visibility: isNear ? "visible" : "hidden" }}
+      >
+        <motion.div style={{ y }} className="relative w-full h-full will-change-transform">
           <Image
             src="/images/2.jpeg"
             alt=""
             width={3000}
             height={3000}
-            priority
+            sizes="100vw"
+            // Below the fold: let it load lazily instead of competing with the hero for first-load bandwidth.
+            // The browser still starts it well before this section scrolls into view.
             className="w-full h-full object-cover"
           />
         </motion.div>

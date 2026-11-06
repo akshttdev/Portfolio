@@ -4,6 +4,7 @@ import Scene from "../scenes/Scene";
 import MouseTrail from "../utils/MouseTrail";
 import FluidSim from "../postprocessing/FluidSim";
 import PostProcessing from "../postprocessing/PostProcessing";
+import { getLenis } from "../../../lib/lenis";
 
 // Fluid sim / mouse trail are soft, blurred effects — rendering them at full
 // resolution is wasted cost (especially on 4K/high-DPI screens). Half res is
@@ -93,7 +94,16 @@ class Three {
 
 		const delta = this.clock.getDelta();
 
-		this.scene.animate(delta, this.clock.elapsedTime);
+		// While the page is actively scrolling away from the hero, skip the render: it's the most expensive
+		// thing on the page and competes with Lenis for every frame, which is what made the hero → next
+		// section scroll jitter. The canvas keeps showing the last frame; rendering resumes once scrolling stops.
+		const lenis = getLenis();
+		if (lenis?.isScrolling && window.scrollY > 2) {
+			this.rafHandle = requestAnimationFrame(() => this.#animate());
+			return;
+		}
+
+		this.scene.animate(Math.min(delta, 0.1), this.clock.elapsedTime);
 
 		// Update mouse trail → fluid sim
 		this.mouseTrail.update(

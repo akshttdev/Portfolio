@@ -48,11 +48,18 @@ export default class MouseTrail {
 
 		this.#lerp(targetX, targetY);
 		this.#updateOpacity();
-		this.#draw();
+
+		// Once the trail has faded out and the canvas is plain white, there is nothing new to draw:
+		// skip the 2D redraw and the per-frame CPU→GPU texture upload until the mouse moves again.
+		const idle = this.opacity <= 0.01;
+		if (!(idle && this.isBlank)) {
+			this.#draw();
+			this.isBlank = idle;
+			this.texture.needsUpdate = true;
+		}
 
 		this.lastX = this.currentX;
 		this.lastY = this.currentY;
-		this.texture.needsUpdate = true;
 	}
 
 	#lerp(targetX, targetY) {

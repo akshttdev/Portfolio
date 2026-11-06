@@ -37,21 +37,25 @@ html {
 
 @font-face {
   font-family: 'ConfilliaBold';
+  font-display: swap;
   src: url('/fonts/ConfilliaBold.otf') format('opentype');
 }
 
 @font-face {
   font-family: "robert-regular";
+  font-display: swap;
   src: url("/fonts/RoobertPRO-Regular.woff2") format("woff2");
 }
 
 @font-face {
   font-family: "robert-medium";
+  font-display: swap;
   src: url("/fonts/RoobertPRO-Medium.woff2") format("woff2");
 }
 
 @font-face {
   font-family: "robert-bold";
+  font-display: swap;
   src: url("/fonts/RoobertPRO-Bold.woff2") format("woff2");
 }
 
@@ -123,18 +127,34 @@ html {
 
 
 
+/* Film grain. A static tile shifted with transform runs on the compositor; the old full-screen
+   animated GIF forced a repaint of the whole viewport (and every blend-mode layer) each frame. */
 .noise::before {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
   content: '';
   opacity: 0.06;
   z-index: 10;
   pointer-events: none;
-  background: url("../../public/images/noise.gif");
+  background: url("/images/noise.png") repeat;
+  will-change: transform;
+  animation: grain 0.6s steps(1) infinite;
+}
 
+@keyframes grain {
+  0%   { transform: translate(0, 0); }
+  17%  { transform: translate(-7%, 4%); }
+  33%  { transform: translate(5%, -9%); }
+  50%  { transform: translate(-11%, -3%); }
+  67%  { transform: translate(9%, 7%); }
+  83%  { transform: translate(-3%, 11%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .noise::before { animation: none; }
 }
 
 ::selection {

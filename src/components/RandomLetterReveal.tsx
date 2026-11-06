@@ -59,7 +59,7 @@ const RandomLetterReveal = ({ word, className }: Props) => {
       }
     };
 
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [word]);
 

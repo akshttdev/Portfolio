@@ -1,6 +1,5 @@
 "use client";
 
-import { initLenis } from "@/lib/lenis";
 import Navbar from "@/components/Navbar";
 import SkullHero from "@/components/SkullHero";
 import Projects from "@/components/Projects";
@@ -21,8 +20,7 @@ export default function Home() {
       sessionStorage.setItem("hasLoaded", "true");
       setFirstLoad(true);
     }
-
-    initLenis();
+    // Lenis smooth scrolling is started site-wide by <SmoothScroll /> in the root layout.
   }, []);
 
   return (
