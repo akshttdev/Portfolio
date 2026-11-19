@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 
-/** width/height: size the photo is shown at, in px (keep the photo's own aspect ratio so nothing is cropped) */
+/** width/height: size the photo is shown at, in px (a different shape from the photo's crops it, centred) */
 type Props = { label: string; image: string; width?: number; height?: number };
 
 const OFFSET = 20; // px from the cursor

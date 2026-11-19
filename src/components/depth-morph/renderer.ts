@@ -7,6 +7,10 @@ const UNIFORMS = [
   "uTime", "uReveal", "uBreath", "uMouse", "uScale", "uOffset", "uRim", "uFromFocus", "uToFocus", "uFromZoom", "uToZoom",
 ] as const;
 
+// Units 0-3 hold the bound pair (uFrom, uFromDepth, uTo, uToDepth); new textures are uploaded on this one.
+// WebGL guarantees at least 8 units.
+const UPLOAD_UNIT = 4;
+
 export type FrameParams = {
   scale: number;
   offset: [number, number];
@@ -82,6 +86,9 @@ function setup(gl: WebGLRenderingContext, canvas: HTMLCanvasElement, prog: WebGL
   return {
     createTexture(src: TexImageSource) {
       const t = gl.createTexture()!;
+      // Upload on a spare unit. bindTexture acts on the active unit, which after bindPair is 3 (uToDepth):
+      // a slide that finished loading mid-morph would silently replace the bound pair's "to" depth map.
+      gl.activeTexture(gl.TEXTURE0 + UPLOAD_UNIT);
       gl.bindTexture(gl.TEXTURE_2D, t);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);

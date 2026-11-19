@@ -7,7 +7,8 @@ import * as THREE from "three/webgpu";
 // internal render resolution and let the canvas (already 100% width/height)
 // upscale it. The softness is imperceptible against the film-grain/dither
 // look, but the GPU cost stays flat above this budget.
-const MAX_RENDER_PIXELS = 1920 * 1080;
+// 1280x800: the hero is all blur, bloom and grain, so this looks the same as 1080p at about half the GPU work
+const MAX_RENDER_PIXELS = 1280 * 800;
 
 class WebGPUContext {
 	constructor(container) {

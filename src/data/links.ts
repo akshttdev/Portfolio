@@ -3,6 +3,8 @@ export const LINKS = {
   x: "https://x.com/akshttdev",
   linkedin: "https://www.linkedin.com/in/akshatdhami/",
   github: "https://github.com/akshttdev",
+  leetcode: "https://leetcode.com/u/akshtt/",
+  soundcloud: "https://soundcloud.com/akshat-872450192",
   cal: "https://cal.com/akshtt/meeting-with-akshat",
   resume:
     "https://drive.google.com/drive/folders/1jZGznxWpaR7PZEiohbVRxG_3Sn1WAIGg?dmr=1&ec=wgc-drive-hero-goto",
@@ -30,5 +32,7 @@ export const FOOTER_LINKS: SocialLinkData[] = [
   { label: "linkedin", href: LINKS.linkedin },
   { label: "twitter", href: LINKS.x },
   { label: "github", href: LINKS.github },
+  { label: "leetcode", href: LINKS.leetcode },
+  { label: "soundcloud", href: LINKS.soundcloud },
   { label: "meeting", href: LINKS.cal },
 ];

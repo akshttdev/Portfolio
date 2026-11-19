@@ -1,7 +1,7 @@
 export default function ProjectsOutro() {
   return (
     <div className="w-full mt-48 px-2 md:px-8 relative z-[30] pointer-events-none select-none">
-      <div className="text-white/90 uppercase text-[0.75rem] sm:text-[0.9rem] md:text-[1.2rem] leading-relaxed font-medium w-full flex flex-col">
+      <div className="para-txt w-full flex flex-col">
         <div className="text-left">
           Stuff changes. Taste shifts. What felt <br />
           insane one night might look mid the next morning. <br />

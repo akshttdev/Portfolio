@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import HeroHeadline from "./HeroHeadline";
-import HeroParagraph from "./HeroParagraph";
-import { markSkullReady } from "@/lib/skullReady";
+import { markSkullReady, setSkullProgress } from "@/lib/skullReady";
+import { loadModelBuffer, MODEL_URLS } from "@/components/skull/utils/modelCache";
 
-const Placeholder = () => <section className="relative w-full h-screen overflow-hidden bg-[#080808]" />;
+const Placeholder = () => <section className="relative w-full h-screen overflow-hidden bg-ink" />;
 
 // The fallback hero pulls in three.js + react-three-fiber + postprocessing. Load it only for browsers
 // that actually need it, instead of shipping it in the main bundle to every visitor.
@@ -23,9 +23,8 @@ const HAS_WEBGPU = typeof navigator !== "undefined" && "gpu" in navigator;
 const loadEngine = () => import("@/components/skull/core/Three.js");
 const earlyEngine = HAS_WEBGPU ? loadEngine() : null;
 earlyEngine?.catch(() => {}); // a failure is handled where it's awaited; avoid an "unhandled rejection" before then
-if (HAS_WEBGPU) {
-  ["man_comp-transformed", "skeleton_comp-transformed"].forEach((m) => fetch(`/models/${m}.glb`).catch(() => {}));
-}
+// The loader picks these same downloads up (see modelCache), so each model is fetched once
+if (HAS_WEBGPU) Object.values(MODEL_URLS).forEach(loadModelBuffer);
 
 function withTimeout<T>(promise: Promise<T>, ms: number, message: string): Promise<T> {
   let timer: ReturnType<typeof setTimeout> | undefined;
@@ -56,13 +55,11 @@ export default function SkullHero() {
       try {
         const { default: Three } = await (earlyEngine ?? loadEngine());
         if (cancelled) return;
+        setSkullProgress(0.3);
         const three = new Three(container);
         try {
-          const start = async () => {
-            await three.run();
-            await three.scene?.ready;
-          };
-          await withTimeout(start(), INIT_TIMEOUT_MS, "WebGPU init timed out");
+          // run() resolves once the models are in and the first frame is drawn
+          await withTimeout(three.run(setSkullProgress), INIT_TIMEOUT_MS, "WebGPU init timed out");
         } catch (err) {
           three.dispose();
           throw err;
@@ -94,19 +91,13 @@ export default function SkullHero() {
 
   return (
     <section id="index" className="relative w-full h-screen overflow-hidden select-none">
-      <div ref={containerRef} className="absolute inset-0 z-0 pointer-events-auto bg-[#080808]" />
+      <div ref={containerRef} className="absolute inset-0 z-0 pointer-events-auto bg-ink" />
 
       {ready && (
-        <div className="relative z-10 flex flex-col h-full w-full pt-[38vh] pb-10 md:pb-14 pointer-events-none text-white mix-blend-difference">
-          <HeroHeadline
-            className="px-6 md:px-16"
-            lineClassName="text-[1.2rem] sm:text-[1.6rem] md:text-[2.25rem] lg:text-[3rem] xl:text-[3.5rem] 2xl:text-[4.25rem]"
-            gapClassName="mb-2 md:mb-3"
-          />
-
-          {/* Paragraph: bottom-right */}
-          <div className="mt-auto w-full min-w-0 px-6 md:pl-16 md:pr-10 md:flex md:justify-end">
-            <HeroParagraph className="text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed uppercase font-medium text-left" />
+        <div className="pointer-events-none relative z-10 h-full w-full text-bone">
+          {/* centred title */}
+          <div className="absolute inset-0 flex items-center justify-center px-6">
+            <HeroHeadline className="text-center" />
           </div>
         </div>
       )}

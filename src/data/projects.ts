@@ -11,9 +11,11 @@ export type Project = {
   imgSize: [width: number, height: number];
   alt: string;
   url: string;
+  /** same as img (the photos are graded red/black by scripts/grunge.mjs; originals in /images/projects) */
+  grunge: string;
 };
 
-export const projectsData: Project[] = [
+const RAW: Omit<Project, "grunge">[] = [
   {
     id: "synapse",
     name: "Synapse",
@@ -22,8 +24,8 @@ export const projectsData: Project[] = [
     client: "Experimental",
     description: ".",
     license: "Private",
-    img: "/images/projects/1.jpg",
-    imgSize: [2400, 1601],
+    img: "/images/projects/grunge/synapse.webp",
+    imgSize: [1400, 934],
     alt: "",
     url: "https://github.com/akshttdev/Synapse",
   },
@@ -36,8 +38,8 @@ export const projectsData: Project[] = [
     description:
       "A full-stack Cal.com-style scheduling application built with Next.js, Express, Prisma, and PostgreSQL. Enables users to create event types, configure availability, and share public booking links with dynamic slot generation.",
     license: "Private",
-    img: "/images/projects/25.jpeg",
-    imgSize: [1920, 2560],
+    img: "/images/projects/grunge/cal.webp",
+    imgSize: [1050, 1400],
     alt: "Cal scheduling application",
     url: "https://github.com/akshttdev/Cal",
   },
@@ -50,8 +52,8 @@ export const projectsData: Project[] = [
     description:
       "A production-style Retrieval-Augmented Generation (RAG) system that acts as a PyTorch support engineer. Retrieves and generates grounded answers using PyTorch docs, source code, and GitHub issues with citation-backed responses.",
     license: "Private",
-    img: "/images/projects/22.jpeg",
-    imgSize: [2048, 1536],
+    img: "/images/projects/grunge/torch.webp",
+    imgSize: [1400, 1050],
     alt: "Torch RAG system",
     url: "https://github.com/akshttdev/Torch",
   },
@@ -64,8 +66,8 @@ export const projectsData: Project[] = [
     description:
       "Distributed fault-tolerant key-value store written from scratch in C++20. Raft consensus with snapshots and membership changes, a custom LSM-tree storage engine, and a linearizability checker verified under chaos testing.",
     license: "MIT",
-    img: "/images/projects/23.jpeg",
-    imgSize: [2048, 2560],
+    img: "/images/projects/grunge/knot.webp",
+    imgSize: [1120, 1400],
     alt: "Knot distributed key-value store",
     url: "https://github.com/akshttdev/knot",
   },
@@ -79,8 +81,8 @@ export const projectsData: Project[] = [
     description:
       "Fastest lap predictions using XGBoost Regressor and minimal feature engineering. Ready for emergency deployment.",
     license: "MIT",
-    img: "/images/projects/24.jpg",
-    imgSize: [2048, 1568],
+    img: "/images/projects/grunge/burnout.webp",
+    imgSize: [1400, 1051],
     alt: "Burnout race predictor",
     url: "https://github.com/akshttdev/burnout",
   },
@@ -93,8 +95,8 @@ export const projectsData: Project[] = [
     description:
       "Web platform aimed at futuristic agriculture planning and crop data visualization. Built with JavaScript.",
     license: "MIT",
-    img: "/images/projects/17.jpg",
-    imgSize: [1671, 2048],
+    img: "/images/projects/grunge/agronest.webp",
+    imgSize: [1142, 1400],
     alt: "AgroNest interface",
     url: "https://github.com/akshttdev/AgroNestInfuturum",
   },
@@ -107,9 +109,11 @@ export const projectsData: Project[] = [
     description:
       "A playful Move-based robot game to play rock-paper-scissors against a basic AI. Simple and fun.",
     license: "MIT",
-    img: "/images/projects/21.jpg",
-    imgSize: [2048, 1584],
+    img: "/images/projects/grunge/rps-robot.webp",
+    imgSize: [1400, 1069],
     alt: "PvRobot RPS",
     url: "https://github.com/akshttdev/RockPaperScissorPvRobot",
   },
 ];
+
+export const projectsData: Project[] = RAW.map((p) => ({ ...p, grunge: p.img }));

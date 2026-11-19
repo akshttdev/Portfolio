@@ -2,6 +2,7 @@ import * as THREE from "three/webgpu";
 import {
 	pass,
 	vec3,
+	vec4,
 	screenUV,
 	screenCoordinate,
 	time,
@@ -15,8 +16,9 @@ import {
 	clamp,
 	floor,
 	texture,
+	fract,
+	vec2,
 } from "three/tsl";
-import { mx_noise_float } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 const BAYER_8X8 = [
@@ -50,6 +52,7 @@ function createBayerTexture() {
 
 export default class PostProcessing {
 	constructor(renderer, solidScene, wireScene, camera, fluidMaskNode) {
+		this.renderer = renderer;
 		this.pipeline = new THREE.RenderPipeline(renderer);
 		this.solidScene = solidScene;
 		this.wireScene = wireScene;
@@ -63,10 +66,10 @@ export default class PostProcessing {
 
 	#compose() {
 		// Render both scenes
-		const solidPass = pass(this.solidScene, this.camera);
+		const solidPass = (this.solidPass = pass(this.solidScene, this.camera));
 		const solidColor = solidPass.getTextureNode("output");
 
-		const wirePass = pass(this.wireScene, this.camera);
+		const wirePass = (this.wirePass = pass(this.wireScene, this.camera));
 		const wireColor = wirePass.getTextureNode("output");
 
 		// Bloom on solid scene
@@ -86,10 +89,11 @@ export default class PostProcessing {
 			fluidMask,
 		);
 
-		// Film grain
-		const noise = mx_noise_float(
-			vec3(screenUV.mul(2000.0), time.mul(20.0)),
-		).mul(0.015);
+		// Film grain: per-pixel hash noise, re-rolled every frame. Was MaterialX Perlin noise sampled at
+		// ~1 cell per pixel, which looks the same here (±1.5%, under the dither) but is a big chunk of shader
+		// code: this cut the post-processing compile on a first visit by ~250 ms.
+		const seed = screenCoordinate.add(fract(time.mul(7.0)).mul(97.0));
+		const noise = fract(sin(dot(seed, vec2(12.9898, 78.233))).mul(43758.5453)).sub(0.5).mul(0.015);
 
 		// Combine effects
 		const withEffects = blended.sub(noise);
@@ -102,8 +106,12 @@ export default class PostProcessing {
 			float(0.985),
 		);
 
-		// No color tint: keep scene neutral for the monochrome pass
-		const lowContrast = desaturated;
+		// The site's grade: black shadows, blood-red mids, bone-white highlights
+		const level = dot(desaturated.rgb, vec3(0.299, 0.587, 0.114)); // .rgb: the colour is RGBA, alpha would count as light
+		const toRed = vec3(0.86, 0.12, 0.08).mul(clamp(level.div(float(0.42)), float(0.0), float(1.0)));
+		const graded = mix(toRed, vec3(0.96, 0.93, 0.9), clamp(level.sub(float(0.42)).div(float(0.58)), float(0.0), float(1.0)));
+		// keep the pipeline's RGBA shape (a vec3 output leaves the canvas alpha undefined)
+		const lowContrast = vec4(graded, float(1.0));
 
 		// 8x8 ordered Bayer dither (per-channel), then blend with original scene
 		const bayerNode = texture(this.bayerTexture);
@@ -121,6 +129,16 @@ export default class PostProcessing {
 		const finalColor = mix(lowContrast, ditheredColor, float(0.35));
 
 		this.pipeline.outputNode = finalColor;
+	}
+
+	/**
+	 * Compiles the models' shaders for both scene passes in the background (createRenderPipelineAsync).
+	 * Call once the models are in the scenes. Otherwise they compile synchronously on the first frame that
+	 * draws them, which stalls the GPU process and with it the whole page (preloader included) for up to a
+	 * few seconds whenever the browser's shader cache is cold.
+	 */
+	compileAsync() {
+		return Promise.all([this.solidPass.compileAsync(this.renderer), this.wirePass.compileAsync(this.renderer)]);
 	}
 
 	render() {

@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import Preloader from "./Preloader";
 import ColumnWipe from "./ColumnWipe";
+import { markRevealed } from "@/lib/intro";
 
 const SEEN_KEY = "hasLoaded";
 
@@ -25,19 +26,21 @@ function readFirstVisit(): boolean {
  * The page content is a stable sibling of the intro, so switching between the two never remounts it
  * (previously the whole page, 3D hero included, was torn down and rebuilt when returning to it).
  */
-export default function IntroGate({ children }: { children: ReactNode }) {
+export default function IntroGate({ children, waitForHero = false }: { children: ReactNode; waitForHero?: boolean }) {
   const [firstVisit, setFirstVisit] = useState(true); // matches the server render
   const decided = useRef<boolean | null>(null); // survives StrictMode's effect re-run
 
   useIsoLayoutEffect(() => {
     decided.current ??= readFirstVisit();
     setFirstVisit(decided.current);
+    // no preloader this time: the page shows straight away
+    if (!decided.current) markRevealed();
   }, []);
 
   return (
     <>
-      {firstVisit ? <Preloader /> : <ColumnWipe />}
-      <div className="noise relative z-10">{children}</div>
+      {firstVisit ? <Preloader waitForHero={waitForHero} /> : <ColumnWipe />}
+      <div className="relative z-10">{children}</div>
     </>
   );
 }

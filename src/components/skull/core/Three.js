@@ -4,7 +4,6 @@ import Scene from "../scenes/Scene";
 import MouseTrail from "../utils/MouseTrail";
 import FluidSim from "../postprocessing/FluidSim";
 import PostProcessing from "../postprocessing/PostProcessing";
-import { getLenis } from "../../../lib/lenis";
 
 // Fluid sim / mouse trail are soft, blurred effects, so rendering them at full
 // resolution is wasted cost (especially on 4K/high-DPI screens). Half res is
@@ -15,22 +14,57 @@ class Three {
 	constructor(container) {
 		this.container = container;
 		this.clock = new THREE.Clock();
+		// the scene's own time: advances only while it renders, so it carries on smoothly after a pause
+		// (scrolled away, other tab) instead of jumping ahead by the time it was paused
+		this.time = 0;
+		this.size = { width: 0, height: 0 };
+		this.resizeTimer = null;
 		this.disposed = false;
 		this.rafHandle = null;
 		this.visible = true;
 		this.onResize = this.#onResize.bind(this);
 		this.onVisibilityChange = this.#onVisibilityChange.bind(this);
+		this.tick = () => this.#animate();
 	}
 
-	async run() {
+	/**
+	 * Resolves once the models are loaded and the first full frame is done.
+	 * `onProgress` (0..1) drives the preloader's count.
+	 *
+	 * On a first visit (cold shader cache) the GPU spends ~3 s compiling shaders: ~1 s starting WebGPU,
+	 * ~0.6 s for the environment map, ~1.2 s for bloom + grain + dither. Those compiles are synchronous
+	 * and stall the whole tab, so they all happen here, under the preloader, never after the hero is shown.
+	 */
+	async run(onProgress) {
 		this.context = new WebGPUContext(this.container);
 		await this.context.init();
 		if (this.disposed) return; // unmounted while WebGPU was starting
+		onProgress?.(0.45);
 
 		this.#setup();
+		// One frame of the still-empty scenes while the models download: builds the post-processing passes
+		// (bloom, fluid sim, grain) under the preloader, overlapping the network wait. The loop itself doesn't
+		// start yet; rendering an empty scene every frame only competed with the preloader for the GPU.
+		this.#render(0, 0);
+		onProgress?.(0.6);
+
+		await this.scene.ready;
+		if (this.disposed) return;
+		onProgress?.(0.75);
+		// The models' shaders compile in the background (async pipelines), so the first frame that draws them
+		// has nothing left to compile.
+		await this.postProcessing.compileAsync();
+		if (this.disposed) return;
+		onProgress?.(0.9);
+
 		this.#addVisibilityHandling();
-		this.#animate();
+		const start = this.context.getFullScreenDimensions();
+		this.size = { width: Math.round(start.width), height: Math.round(start.height) };
 		this.#addResizeListener();
+		this.clock.getDelta(); // don't count the loading time as one long first frame
+		this.#animate();
+		// Let the GPU finish that first frame, so the preloader leaves onto a finished hero
+		await this.context.renderer.backend.device?.queue.onSubmittedWorkDone();
 	}
 
 	#setup() {
@@ -57,6 +91,7 @@ class Three {
 			([entry]) => {
 				this.visible = entry.isIntersecting && document.visibilityState === "visible";
 				if (this.visible && this.rafHandle === null && !this.disposed) {
+					this.clock.getDelta(); // don't count the paused time
 					this.#animate();
 				}
 			},
@@ -80,6 +115,7 @@ class Three {
 		const inViewport = rect.bottom > 0 && rect.top < window.innerHeight;
 		this.visible = inViewport && document.visibilityState === "visible";
 		if (this.visible && this.rafHandle === null && !this.disposed) {
+			this.clock.getDelta(); // don't count the paused time
 			this.#animate();
 		}
 	}
@@ -93,18 +129,17 @@ class Three {
 			return;
 		}
 
-		const delta = this.clock.getDelta();
+		// Render every frame, scrolling or not. (It used to skip frames while the page scrolled, which froze
+		// the skull mid-scroll and then made it jump.) The render size cap in WebGPUContext keeps this cheap.
+		const delta = Math.min(this.clock.getDelta(), 1 / 30);
+		this.time += delta;
+		this.#render(delta, this.time);
 
-		// While the page is actively scrolling away from the hero, skip the render: it's the most expensive
-		// thing on the page and competes with Lenis for every frame, which is what made the hero → next
-		// section scroll jitter. The canvas keeps showing the last frame; rendering resumes once scrolling stops.
-		const lenis = getLenis();
-		if (lenis?.isScrolling && window.scrollY > 2) {
-			this.rafHandle = requestAnimationFrame(() => this.#animate());
-			return;
-		}
+		this.rafHandle = requestAnimationFrame(this.tick);
+	}
 
-		this.scene.animate(Math.min(delta, 0.1), this.clock.elapsedTime);
+	#render(delta, elapsed) {
+		this.scene.animate(delta, elapsed);
 
 		// Update mouse trail → fluid sim
 		this.mouseTrail.update(
@@ -115,16 +150,24 @@ class Three {
 
 		// Render everything (scene passes + effects)
 		this.postProcessing.render();
-
-		this.rafHandle = requestAnimationFrame(() => this.#animate());
 	}
 
 	#addResizeListener() {
 		window.addEventListener("resize", this.onResize);
 	}
 
+	// Debounced, and only when the hero's size really changed: on phones the address bar showing/hiding fires
+	// resize events all through a scroll, and re-sizing the canvas clears it (the flashes / broken frames).
 	#onResize() {
+		clearTimeout(this.resizeTimer);
+		this.resizeTimer = setTimeout(() => this.#applyResize(), 150);
+	}
+
+	#applyResize() {
+		if (this.disposed || !this.context) return;
 		const { width, height } = this.context.getFullScreenDimensions();
+		if (Math.round(width) === this.size.width && Math.round(height) === this.size.height) return;
+		this.size = { width: Math.round(width), height: Math.round(height) };
 		const pr = this.context.pixelRatio;
 
 		this.context.onResize(width, height);
@@ -139,6 +182,7 @@ class Three {
 			this.rafHandle = null;
 		}
 		window.removeEventListener("resize", this.onResize);
+		clearTimeout(this.resizeTimer);
 		document.removeEventListener("visibilitychange", this.onVisibilityChange);
 		this.io?.disconnect();
 		this.io = null;

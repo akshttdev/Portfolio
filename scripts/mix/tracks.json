@@ -1,0 +1,69 @@
+{
+ "root": "~/Documents/Music",
+ "tracks": [
+  {
+   "id": "empty",
+   "file": "Martin Garrix, DubVision & Jaimes - Empty (Extended Mix).mp3"
+  },
+  {
+   "id": "breakaway",
+   "file": "Martin Garrix & Mesto feat. WILHELM - Breakaway (Extended Mix).mp3"
+  },
+  {
+   "id": "limitless",
+   "file": "Martin Garrix & Mesto - Limitless (Extended Mix).mp3"
+  },
+  {
+   "id": "mi-amor",
+   "file": "ARTBAT, 7 SKIES, Sadie Rose Van - Mi Amor.m4a"
+  },
+  {
+   "id": "this-dream-of-you",
+   "file": "Progressive House/Martin Garrix/Martin Garrix - This Dream Of You (Intro Edit).mp3"
+  },
+  {
+   "id": "follow",
+   "file": "Progressive House/Martin Garrix/Martin Garrix & Zedd - Follow-967589832.mp3"
+  },
+  {
+   "id": "mistaken",
+   "file": "Progressive House/Martin Garrix/Martin Garrix & Matisse & Sadko feat. Alex Aris - Mistaken (Club Mix)-1659713498.mp3"
+  },
+  {
+   "id": "game-over",
+   "file": "Progressive House/Martin Garrix/Martin Garrix & Loopers - Game Over-36238259.mp3"
+  },
+  {
+   "id": "byte",
+   "file": "Progressive House/Martin Garrix/Martin Garrix & Brooks - Byte-595217378.mp3",
+   "bpm": 128,
+   "drop": 82.9
+  },
+  {
+   "id": "breach",
+   "file": "Progressive House/Martin Garrix/Martin Garrix & Blinders - Breach (Walk Alone)-867702534.mp3",
+   "drop": 129.5
+  },
+  {
+   "id": "aurora",
+   "file": "Progressive House/Martin Garrix/Martin Garrix & Blinders - Aurora (Official Video).mp3"
+  },
+  {
+   "id": "voodoo",
+   "file": "Progressive House/Martin Garrix/Martin Garrix, R3HAB & Skytech - Voodoo-59510012.mp3",
+   "preBars": 2
+  },
+  {
+   "id": "dramma",
+   "file": "TechHouse/R3HAB & ARTBAT - Dramma.m4a"
+  },
+  {
+   "id": "gravity",
+   "file": "Martin Garrix & Sem Vox feat. Jaimes - Gravity (Tomas Grey & Off Clouds Extended Remix).mp3"
+  },
+  {
+   "id": "carry-you",
+   "file": "Martin Garrix, Third Party, Oaks, Declan J Donovan - Carry You (Extended Mix).mp3"
+  }
+ ]
+}

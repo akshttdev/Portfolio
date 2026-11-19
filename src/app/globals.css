@@ -3,20 +3,22 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Grunge red/black: ink, blood red, bone white. The type is Inter Tight (loaded in app/layout.tsx). */
 @theme {
-  --font-robert-r: "robert-regular", sans-serif;
-  --font-robert-m: "robert-medium", sans-serif;
-  --font-robert-b: "robert-bold", sans-serif;
-  --background: #ffffff;
+  --color-ink: #050505;
+  --color-bone: #efefef;
+  --color-blood: #e1251b;
+  --color-ember: #6e0b07;
   --color-p: #111111;
-  --color-s: #ffffff;
+  --color-s: #efefef;
   --breakpoint-lg: 1024px;
   --breakpoint-md: 768px;
   --breakpoint-sm: 400px;
 }
 
 body {
-  background-color: #0a0a0a;
+  background-color: var(--color-ink);
+  color: var(--color-bone);
 }
 
 html {
@@ -27,48 +29,40 @@ html {
   display: none;
 }
 
-@font-face {
-  font-family: "robert-regular";
-  font-display: swap;
-  src: url("/fonts/RoobertPRO-Regular.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "robert-medium";
-  font-display: swap;
-  src: url("/fonts/RoobertPRO-Medium.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "robert-bold";
-  font-display: swap;
-  src: url("/fonts/RoobertPRO-Bold.woff2") format("woff2");
-}
-
 @layer utilities {
 
+  /* every paragraph: small, medium-weight capitals */
+  .para-txt {
+    @apply font-sans font-medium text-[12px] md:text-[14px] leading-[1.65] tracking-[0.015em] uppercase text-bone/85;
+  }
+
+  /* small UI text, like the reference: 13px semibold grotesk */
+  .ui-txt {
+    @apply font-sans font-semibold text-[12px] md:text-[13px] tracking-[-0.005em] text-bone;
+  }
+
   .nav-txt {
-    @apply font-robert-b text-[.9rem] text-s max-sm:text-[.75rem] uppercase mix-blend-difference tracking-wide;
+    @apply font-sans font-semibold text-[12px] md:text-[13px] text-bone;
   }
 
   .hero-txt {
-    @apply font-robert-b text-[8rem] text-s leading-[1] tracking-[-4px] max-lg:text-[6rem] max-md:text-[4rem] max-sm:text-[3.5rem] max-md:tracking-[-2px];
+    @apply font-sans font-bold text-[8rem] text-bone leading-[1] tracking-[-0.05em] max-lg:text-[6rem] max-md:text-[4rem] max-sm:text-[3.5rem];
   }
 
   .project-txt {
-    @apply font-robert-b text-[8rem] text-s leading-[1] tracking-[-4px] max-lg:text-[6rem] max-md:text-[4rem] max-sm:text-[3.5rem] max-md:tracking-[-2px];
+    @apply font-sans font-semibold text-[15px] md:text-[17px] text-bone uppercase leading-[1.2] tracking-[0.02em];
   }
 
   .project-length-txt {
-    @apply font-robert-m text-[1.25rem] text-s max-sm:text-[1.15rem];
+    @apply font-sans font-semibold text-[15px] md:text-[17px] text-bone/80;
   }
 
   .project-year-count-txt {
-    @apply font-robert-m text-[.9rem] text-s lowercase;
+    @apply font-sans font-medium text-[13px] md:text-[15px] text-bone/60 lowercase;
   }
 
   .project-card-txt {
-    @apply font-robert-b text-[.9rem] tracking-[-.5px] text-p uppercase text-white;
+    @apply font-sans font-semibold text-[.9rem] tracking-[-0.01em] text-bone;
   }
 }
 
@@ -81,8 +75,8 @@ html {
   width: 200%;
   height: 200%;
   content: '';
-  opacity: 0.06;
-  z-index: 10;
+  opacity: 0.07;
+  z-index: 50;
   pointer-events: none;
   background: url("/images/noise.png") repeat;
   will-change: transform;
@@ -102,12 +96,38 @@ html {
   .noise::before { animation: none; }
 }
 
-::selection {
-  background: white;
-  color: black;
+/* About, "In the crate": little EQ bars on the hovered track */
+.eq-bar { animation: eq-bar 0.9s ease-in-out infinite; }
+
+@keyframes eq-bar {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .eq-bar { animation: none; }
+}
+
+/* Music / work ring: the active thumbnail gets a red frame; the big image drifts slowly */
+.orbit-thumb[data-active="true"] { outline: 1px solid #e1251b; outline-offset: 2px; }
+.orbit-drift { animation: orbit-drift 12s ease-out both; }
+@keyframes orbit-drift { from { transform: scale(1.08); } to { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .orbit-drift { animation: none; } }
+
+::selection {
+  background: var(--color-blood);
+  color: var(--color-bone);
+}
+
+/* Sound on: the little EQ in the top bar */
+.eq-live .eq-bar { animation-play-state: running; }
+.eq-bar-static { transform: scaleY(0.3); }
+
 @theme inline {
+  --font-sans: var(--font-grotesk), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-robert-r: var(--font-sans);
+  --font-robert-m: var(--font-sans);
+  --font-robert-b: var(--font-sans);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -220,6 +240,6 @@ html {
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply font-sans;
   }
 }

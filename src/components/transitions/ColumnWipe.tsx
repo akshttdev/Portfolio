@@ -6,7 +6,7 @@ import { EASE_OUT_CUBIC } from "@/animations/anim";
 const COLUMNS = 6;
 
 /**
- * Page-enter transition: black columns slide off to the right one after another.
+ * Page-enter transition: ink columns, each with a red edge, slide off to the right one after another.
  * Animates transform (not left/width), so it runs on the compositor without relayout.
  */
 export default function ColumnWipe() {
@@ -18,7 +18,7 @@ export default function ColumnWipe() {
       {Array.from({ length: COLUMNS }, (_, i) => (
         <div key={i} className="w-full h-full overflow-hidden">
           <motion.div
-            className="w-full h-full bg-black"
+            className="w-full h-full bg-ink border-r border-blood/60"
             initial={{ x: "0%" }}
             animate={{ x: "100%" }}
             transition={{ duration: 0.45, ease: EASE_OUT_CUBIC, delay: 0.07 * (i + 3) }}

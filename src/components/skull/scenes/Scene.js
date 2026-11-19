@@ -2,6 +2,7 @@ import * as THREE from "three/webgpu";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { CameraRig } from "../utils/CameraRig";
 import InstancedModel from "../utils/InstancedModel";
+import { MODEL_URLS } from "../utils/modelCache";
 
 export default class Scene {
 	constructor(context) {
@@ -20,14 +21,14 @@ export default class Scene {
 
 	#createInstancedModels() {
 		const solid = new InstancedModel(this.solidScene, {
-			url: "/models/man_comp-transformed.glb",
+			url: MODEL_URLS.body,
 			meshName: "body",
 			heightMax: 1.0,
 			roughness: 1.0,
 		});
 
 		const wire = new InstancedModel(this.wireScene, {
-			url: "/models/skeleton_comp-transformed.glb",
+			url: MODEL_URLS.skeleton,
 			meshName: "skeleton",
 			heightMax: 0.9,
 			roughness: 0.9,

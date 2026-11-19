@@ -7,7 +7,6 @@ import type { DepthSlide } from "@/components/depth-morph/config";
 //   apartment { x: 0.565, y: 0.53, h: 0.15 }
 export const aboutSlides: DepthSlide[] = [
   { image: "/images/about/fishing.webp", depth: "/images/about/fishing-depth.webp", label: "First catch", focus: [0.45, 0.36] },
-  { image: "/images/about/apartment.webp", depth: "/images/about/apartment-depth.webp", label: "Off hours", focus: [0.56, 0.5] },
   { image: "/images/about/kurta.webp", depth: "/images/about/kurta-depth.webp", label: "Nights out", focus: [0.5, 0.58] },
 ];
 

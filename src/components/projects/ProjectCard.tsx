@@ -47,13 +47,13 @@ export default function ProjectCard({ project, index: i, progress, spread }: Pro
       </div>
 
       <div className="mt-2 w-full flex justify-between">
-        <p className="project-card-txt text-[1.1rem]">
+        <p className="project-card-txt text-[1.1rem] uppercase">
           <RandomLetterReveal word={project.name} />
         </p>
         <p className="project-card-txt text-[1rem]">
           <RandomLetterReveal word={project.category} />
         </p>
-        <p className="project-card-txt text-[1rem]">
+        <p className="project-card-txt text-[1rem] text-blood">
           <RandomLetterReveal word={project.status} />
         </p>
       </div>
