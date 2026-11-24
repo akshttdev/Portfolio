@@ -11,6 +11,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { TRACKS } from "@/data/music";
 import { projectsData } from "@/data/projects";
 import { markRevealed } from "@/lib/intro";
+import { holdScroll } from "@/lib/lenis";
 import { onSkullProgress, skullReadyPromise } from "@/lib/skullReady";
 
 type Phase = "loading" | "gone";
@@ -27,6 +28,7 @@ export default function Preloader({ waitForHero = false }: { waitForHero?: boole
   const [pct, setPct] = useState(0);
   const [frame, setFrame] = useState(0);
   const loaded = useRef(0);
+  const releaseScroll = useRef<(() => void) | null>(null);
 
   // loading: the 3D hero (when there is one) and the fonts
   useEffect(() => {
@@ -70,6 +72,13 @@ export default function Preloader({ waitForHero = false }: { waitForHero?: boole
     };
   }, [waitForHero]);
 
+  // the page underneath doesn't scroll until the preloader has faded out (or is swapped out mid-count)
+  useEffect(() => {
+    const release = holdScroll();
+    releaseScroll.current = release;
+    return release;
+  }, []);
+
   // the little image box flickers through the work and the music; faster in the build-up
   useEffect(() => {
     if (phase === "gone") return;
@@ -78,10 +87,11 @@ export default function Preloader({ waitForHero = false }: { waitForHero?: boole
   }, [phase]);
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={() => releaseScroll.current?.()}>
       {phase !== "gone" && (
         <motion.div
           key="preloader"
+          data-scroll-lock
           className="fixed inset-0 z-[2000] flex items-center justify-center bg-ink text-bone"
           exit={{ opacity: 0, transition: { duration: 0.45 } }}
         >

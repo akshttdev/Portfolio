@@ -25,6 +25,17 @@ html {
   overflow-x: clip;
 }
 
+/* The page stays put while something covers it (the preloader). Works from the server-rendered HTML,
+   before any script runs. */
+html:has([data-scroll-lock]) {
+  overflow: hidden;
+}
+
+[data-scroll-lock] {
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
 ::-webkit-scrollbar {
   display: none;
 }
